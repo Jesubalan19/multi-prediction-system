@@ -1,1 +1,1 @@
-Multi Prediction System Project
+Mulit Prediction Project
