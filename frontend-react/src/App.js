@@ -2,8 +2,10 @@ import { useState } from "react";
 
 function App() {
 
+  const API = "https://backend-api.onrender.com/predict";
+
+
   const [tab, setTab] = useState("student");
-  const [result, setResult] = useState("");
 
   const [values, setValues] = useState({
     gender: "",
@@ -17,8 +19,16 @@ function App() {
     arrears: "",
     sleep: "",
     mobile: "",
-    health: ""
+    health: "",
+    communication: "",
+    aptitude: "",
+    water: "",
+    stress: "",
+    food: ""
   });
+
+  const [result, setResult] = useState("");
+
 
 
   const handleChange = (e) => {
@@ -29,8 +39,7 @@ function App() {
   };
 
 
-  const clearForm = () => {
-
+  const clearValues = () => {
     setValues({
       gender: "",
       study: "",
@@ -43,12 +52,16 @@ function App() {
       arrears: "",
       sleep: "",
       mobile: "",
-      health: ""
+      health: "",
+      communication: "",
+      aptitude: "",
+      water: "",
+      stress: "",
+      food: ""
     });
 
     setResult("");
   };
-
 
 
   const callAPI = async (url, arr) => {
@@ -56,7 +69,7 @@ function App() {
     const res = await fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ data: arr })
     });
@@ -66,6 +79,8 @@ function App() {
     return data;
   };
 
+
+  // ================= STUDENT =================
 
   const predictStudent = async () => {
 
@@ -84,14 +99,13 @@ function App() {
       values.health
     ];
 
-    const r = await callAPI(
-      "http://localhost:8080/predict/student",
-      arr
-    );
+    const r = await callAPI(API + "/student", arr);
 
     setResult(r === 1 ? "PASS" : "FAIL");
   };
 
+
+  // ================= PLACEMENT =================
 
   const predictPlacement = async () => {
 
@@ -100,17 +114,18 @@ function App() {
       values.internal,
       values.exam,
       values.training,
-      values.arrears
+      values.arrears,
+      values.communication,
+      values.aptitude
     ];
 
-    const r = await callAPI(
-      "http://localhost:8080/predict/placement",
-      arr
-    );
+    const r = await callAPI(API + "/placement", arr);
 
     setResult(r === 1 ? "SELECTED" : "NOT SELECTED");
   };
 
+
+  // ================= HEALTH =================
 
   const predictHealth = async () => {
 
@@ -118,144 +133,75 @@ function App() {
       values.sleep,
       values.mobile,
       values.health,
-      values.training
+      values.training,
+      values.water,
+      values.stress,
+      values.food
     ];
 
-    const r = await callAPI(
-      "http://localhost:8080/predict/health",
-      arr
-    );
+    const r = await callAPI(API + "/health", arr);
 
     setResult(r === 1 ? "GOOD" : "BAD");
   };
 
 
-
   const inputStyle = {
     width: "100%",
-    padding: "8px",
-    marginTop: "8px",
-    borderRadius: "6px",
-    border: "1px solid #ccc"
+    padding: 10,
+    marginTop: 8,
+    borderRadius: 6
   };
 
 
-  const buttonStyle = {
-    padding: "10px",
-    borderRadius: "6px",
+  const btn = {
+    padding: 10,
+    marginTop: 10,
+    marginRight: 10,
     border: "none",
+    borderRadius: 6,
     cursor: "pointer",
-    width: "48%"
+    color: "white"
   };
 
 
   return (
 
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#f3f4f6",
-        fontFamily: "Arial",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center"
-      }}
-    >
+    <div style={{ textAlign: "center", fontFamily: "sans-serif" }}>
 
-      {/* HEADER */}
-
-      <div
-        style={{
-          width: "100%",
-          background: "#2563eb",
-          color: "white",
-          padding: "15px",
-          fontSize: "24px",
-          textAlign: "center",
-          fontWeight: "bold"
-        }}
-      >
-        Multi Prediction System
-      </div>
+      <h1>Multi Prediction System</h1>
 
 
-
-      {/* TABS */}
-
-      <div
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          gap: "10px"
-        }}
-      >
-
-        <button onClick={() => setTab("student")}>
-          Student
-        </button>
-
-        <button onClick={() => setTab("placement")}>
-          Placement
-        </button>
-
-        <button onClick={() => setTab("health")}>
-          Health
-        </button>
-
-      </div>
+      <button onClick={() => setTab("student")}>Student</button>
+      <button onClick={() => setTab("placement")}>Placement</button>
+      <button onClick={() => setTab("health")}>Health</button>
 
 
-
-      {/* CARD */}
-
-      <div
-        style={{
-          width: "420px",
-          background: "white",
-          padding: "20px",
-          marginTop: "20px",
-          borderRadius: "8px",
-          boxShadow: "0 0 10px #ccc"
-        }}
-      >
-
+      <div style={{ width: 400, margin: "auto", marginTop: 20 }}>
 
 
         {tab === "student" && (
           <div>
 
-            <h2>Student Prediction</h2>
+            <input name="gender" placeholder="Gender 0/1" style={inputStyle} onChange={handleChange}/>
+            <input name="study" placeholder="Study Hours" style={inputStyle} onChange={handleChange}/>
+            <input name="attendance" placeholder="Attendance" style={inputStyle} onChange={handleChange}/>
+            <input name="internal" placeholder="Internal" style={inputStyle} onChange={handleChange}/>
+            <input name="assignment" placeholder="Assignment" style={inputStyle} onChange={handleChange}/>
+            <input name="exam" placeholder="Exam" style={inputStyle} onChange={handleChange}/>
+            <input name="gpa" placeholder="GPA" style={inputStyle} onChange={handleChange}/>
+            <input name="training" placeholder="Training 0/1" style={inputStyle} onChange={handleChange}/>
+            <input name="arrears" placeholder="Arrears" style={inputStyle} onChange={handleChange}/>
+            <input name="sleep" placeholder="Sleep" style={inputStyle} onChange={handleChange}/>
+            <input name="mobile" placeholder="Mobile" style={inputStyle} onChange={handleChange}/>
+            <input name="health" placeholder="Health" style={inputStyle} onChange={handleChange}/>
 
-            <input name="gender" value={values.gender} placeholder="Gender 0/1" style={inputStyle} onChange={handleChange}/>
-            <input name="study" value={values.study} placeholder="Study Hours" style={inputStyle} onChange={handleChange}/>
-            <input name="attendance" value={values.attendance} placeholder="Attendance %" style={inputStyle} onChange={handleChange}/>
-            <input name="internal" value={values.internal} placeholder="Internal Marks" style={inputStyle} onChange={handleChange}/>
-            <input name="assignment" value={values.assignment} placeholder="Assignment" style={inputStyle} onChange={handleChange}/>
-            <input name="exam" value={values.exam} placeholder="Exam" style={inputStyle} onChange={handleChange}/>
-            <input name="gpa" value={values.gpa} placeholder="GPA" style={inputStyle} onChange={handleChange}/>
-            <input name="training" value={values.training} placeholder="Training 0/1" style={inputStyle} onChange={handleChange}/>
-            <input name="arrears" value={values.arrears} placeholder="Arrears" style={inputStyle} onChange={handleChange}/>
-            <input name="sleep" value={values.sleep} placeholder="Sleep Hours" style={inputStyle} onChange={handleChange}/>
-            <input name="mobile" value={values.mobile} placeholder="Mobile Usage" style={inputStyle} onChange={handleChange}/>
-            <input name="health" value={values.health} placeholder="Health Score" style={inputStyle} onChange={handleChange}/>
+            <button style={{ ...btn, background: "green" }} onClick={predictStudent}>
+              Predict
+            </button>
 
-            <div style={{ display: "flex", gap: "4%", marginTop: "10px" }}>
-
-              <button
-                style={{ ...buttonStyle, background: "#16a34a", color: "white" }}
-                onClick={predictStudent}
-              >
-                Predict
-              </button>
-
-              <button
-                style={{ ...buttonStyle, background: "#dc2626", color: "white" }}
-                onClick={clearForm}
-              >
-                Clear
-              </button>
-
-            </div>
+            <button style={{ ...btn, background: "red" }} onClick={clearValues}>
+              Clear
+            </button>
 
           </div>
         )}
@@ -265,31 +211,21 @@ function App() {
         {tab === "placement" && (
           <div>
 
-            <h2>Placement Prediction</h2>
+            <input name="gpa" placeholder="GPA" style={inputStyle} onChange={handleChange}/>
+            <input name="internal" placeholder="Internal" style={inputStyle} onChange={handleChange}/>
+            <input name="exam" placeholder="Exam" style={inputStyle} onChange={handleChange}/>
+            <input name="training" placeholder="Training 0/1" style={inputStyle} onChange={handleChange}/>
+            <input name="arrears" placeholder="Arrears" style={inputStyle} onChange={handleChange}/>
+            <input name="communication" placeholder="Communication" style={inputStyle} onChange={handleChange}/>
+            <input name="aptitude" placeholder="Aptitude" style={inputStyle} onChange={handleChange}/>
 
-            <input name="gpa" value={values.gpa} placeholder="GPA" style={inputStyle} onChange={handleChange}/>
-            <input name="internal" value={values.internal} placeholder="Internal" style={inputStyle} onChange={handleChange}/>
-            <input name="exam" value={values.exam} placeholder="Exam" style={inputStyle} onChange={handleChange}/>
-            <input name="training" value={values.training} placeholder="Training" style={inputStyle} onChange={handleChange}/>
-            <input name="arrears" value={values.arrears} placeholder="Arrears" style={inputStyle} onChange={handleChange}/>
+            <button style={{ ...btn, background: "blue" }} onClick={predictPlacement}>
+              Predict
+            </button>
 
-            <div style={{ display: "flex", gap: "4%", marginTop: "10px" }}>
-
-              <button
-                style={{ ...buttonStyle, background: "#2563eb", color: "white" }}
-                onClick={predictPlacement}
-              >
-                Predict
-              </button>
-
-              <button
-                style={{ ...buttonStyle, background: "#dc2626", color: "white" }}
-                onClick={clearForm}
-              >
-                Clear
-              </button>
-
-            </div>
+            <button style={{ ...btn, background: "red" }} onClick={clearValues}>
+              Clear
+            </button>
 
           </div>
         )}
@@ -299,39 +235,27 @@ function App() {
         {tab === "health" && (
           <div>
 
-            <h2>Health Prediction</h2>
+            <input name="sleep" placeholder="Sleep" style={inputStyle} onChange={handleChange}/>
+            <input name="mobile" placeholder="Mobile" style={inputStyle} onChange={handleChange}/>
+            <input name="health" placeholder="Health Score" style={inputStyle} onChange={handleChange}/>
+            <input name="training" placeholder="Exercise 0/1" style={inputStyle} onChange={handleChange}/>
+            <input name="water" placeholder="Water" style={inputStyle} onChange={handleChange}/>
+            <input name="stress" placeholder="Stress" style={inputStyle} onChange={handleChange}/>
+            <input name="food" placeholder="Food" style={inputStyle} onChange={handleChange}/>
 
-            <input name="sleep" value={values.sleep} placeholder="Sleep Hours" style={inputStyle} onChange={handleChange}/>
-            <input name="mobile" value={values.mobile} placeholder="Mobile Usage" style={inputStyle} onChange={handleChange}/>
-            <input name="health" value={values.health} placeholder="Health Score" style={inputStyle} onChange={handleChange}/>
-            <input name="training" value={values.training} placeholder="Exercise 0/1" style={inputStyle} onChange={handleChange}/>
+            <button style={{ ...btn, background: "purple" }} onClick={predictHealth}>
+              Predict
+            </button>
 
-            <div style={{ display: "flex", gap: "4%", marginTop: "10px" }}>
-
-              <button
-                style={{ ...buttonStyle, background: "#7c3aed", color: "white" }}
-                onClick={predictHealth}
-              >
-                Predict
-              </button>
-
-              <button
-                style={{ ...buttonStyle, background: "#dc2626", color: "white" }}
-                onClick={clearForm}
-              >
-                Clear
-              </button>
-
-            </div>
+            <button style={{ ...btn, background: "red" }} onClick={clearValues}>
+              Clear
+            </button>
 
           </div>
         )}
 
 
-
-        <h2 style={{ marginTop: "15px" }}>
-          Result: {result}
-        </h2>
+        <h2>{result}</h2>
 
       </div>
 
