@@ -10,7 +10,8 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class PredictionController {
 
-    private final String flaskUrl = "http://localhost:5000";
+    // ✅ Render Flask URL
+    private final String flaskUrl = "https://ml-api-gu6h.onrender.com";
 
     private RestTemplate restTemplate = new RestTemplate();
 
