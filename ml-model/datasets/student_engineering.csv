@@ -1,0 +1,6 @@
+gender,study_hours,attendance,internal_marks,assignment_score,exam_score,previous_gpa,training,result
+male,5,85,78,80,75,7.5,yes,Pass
+female,2,60,40,50,45,5.5,no,Fail
+male,6,90,88,85,92,8.2,yes,Pass
+female,3,70,55,60,58,6.0,no,Pass
+male,1,50,30,40,35,4.5,no,Fail

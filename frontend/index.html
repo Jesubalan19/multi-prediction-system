@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multi Prediction System</title>
+</head>
+
+<body>
+
+<h2>Multi Prediction System</h2>
+
+<!-- STUDENT -->
+
+<h3>Student Input</h3>
+
+<input id="gender"><br>
+<input id="study"><br>
+<input id="attendance"><br>
+<input id="internal"><br>
+<input id="assignment"><br>
+<input id="exam"><br>
+<input id="gpa"><br>
+<input id="training"><br>
+<input id="arrears"><br>
+<input id="sleep"><br>
+<input id="mobile"><br>
+<input id="health"><br>
+
+<button onclick="predictStudent()">Student</button>
+
+<hr>
+
+<!-- PLACEMENT -->
+
+<h3>Placement Input</h3>
+
+<input id="pcgpa"><br>
+<input id="parrears"><br>
+<input id="pintern"><br>
+<input id="pproject"><br>
+<input id="pcoding"><br>
+<input id="pcomm"><br>
+<input id="papt"><br>
+
+<button onclick="predictPlacement()">Placement</button>
+
+<hr>
+
+<!-- HEALTH -->
+
+<h3>Health Input</h3>
+
+<input id="hsleep"><br>
+<input id="hwater"><br>
+<input id="hexercise"><br>
+<input id="hstress"><br>
+<input id="hbmi"><br>
+<input id="hscreen"><br>
+<input id="hjunk"><br>
+
+<button onclick="predictHealth()">Health</button>
+
+<hr>
+
+<h3 id="result"></h3>
+
+
+<script>
+
+
+function predictStudent(){
+
+    let data = [
+
+        Number(gender.value),
+        Number(study.value),
+        Number(attendance.value),
+        Number(internal.value),
+        Number(assignment.value),
+        Number(exam.value),
+        Number(gpa.value),
+        Number(training.value),
+        Number(arrears.value),
+        Number(sleep.value),
+        Number(mobile.value),
+        Number(health.value)
+
+    ]
+
+    fetch("http://localhost:8080/api/predict/student",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({data:data})
+
+    })
+
+    .then(r=>r.json())
+    .then(r=>result.innerText="Student: "+r.prediction)
+
+}
+
+
+
+function predictPlacement(){
+
+    let data=[
+
+        Number(pcgpa.value),
+        Number(parrears.value),
+        Number(pintern.value),
+        Number(pproject.value),
+        Number(pcoding.value),
+        Number(pcomm.value),
+        Number(papt.value)
+
+    ]
+
+    fetch("http://localhost:8080/api/predict/placement",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({data:data})
+
+    })
+
+    .then(r=>r.json())
+    .then(r=>result.innerText="Placement: "+r.prediction)
+
+}
+
+
+
+function predictHealth(){
+
+    let data=[
+
+        Number(hsleep.value),
+        Number(hwater.value),
+        Number(hexercise.value),
+        Number(hstress.value),
+        Number(hbmi.value),
+        Number(hscreen.value),
+        Number(hjunk.value)
+
+    ]
+
+    fetch("http://localhost:8080/api/predict/health",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({data:data})
+
+    })
+
+    .then(r=>r.json())
+    .then(r=>result.innerText="Health: "+r.prediction)
+
+}
+
+</script>
+
+</body>
+</html>
