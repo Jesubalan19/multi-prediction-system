@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function App() {
 
-  const API = "https://backend-api.onrender.com/predict";
+  const API = "https://ml-api-gu6h.onrender.com/predict";
 
 
   const [tab, setTab] = useState("student");
